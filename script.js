@@ -1,5 +1,8 @@
 var countInterval;
-
+var audio = new Audio('audio/clockSound.mp3');
+var pauseAuido=document.getElementById('pause-counter');
+var resetCounter=document.getElementById('reset-counter');
+var isCounterRunning=false;
 
 function startCounter() {
 
@@ -25,9 +28,24 @@ function startCounter() {
     
     // Clears the previous interval that was running
     clearInterval(countInterval);
+   
+    resetCounter.addEventListener('click', function(){
+        if(!isCounterRunning){
+            resetNumbers(currentNo, nextNo);
+        } 
+    })
+    pauseAuido.addEventListener('click', function(){
+        clearInterval(countInterval);
+        stopSound();
+        isCounterRunning=false;
 
+    })
     countInterval = setInterval(function () {
+        isCounterRunning=true;
+        playSound();
         if (count === number) {
+            isCounterRunning=false;
+            stopSound();
             clearInterval(countInterval);
             alert("Counter has stopped");
             return;
@@ -45,6 +63,13 @@ function resetNumbers(currentNo, nextNo, end) {
     nextNo.innerText = 1;
 }
 
+function playSound(){
+   audio.play();
+}
+
+function stopSound(){
+    audio.pause();
+}
 
 
 function increaseCount(currentNo, nextNo) {
